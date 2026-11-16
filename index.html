@@ -613,6 +613,10 @@ html.tt-edit .float{display:none!important}
     valcosmetic: {nombre:"Valcosmetic",   tel:"34666484113"}
   };
   var FALLBACK = "34629587595"; // Jose Antonio
+  /* Asesora forzada por URL (?a=mt): cuando una asesora ayuda en una zona que no es la suya,
+     todos los WhatsApp van a su teléfono, sea cual sea la ciudad elegida. */
+  var ASESORAS = { mt:"montse", ma:"mariaangels", sa:"sandra" };
+  var FORZADA = null;
   var SITE = "https://tour-timeless.dr-grandel.es/";
 
   /* ============================== TEXTOS ES ============================== */
@@ -748,7 +752,12 @@ html.tt-edit .float{display:none!important}
   function byId(id){ for(var i=0;i<EVENTS.length;i++) if(EVENTS[i].id===id) return EVENTS[i]; return null; }
   function cityName(ev){ return ev[state.lang] || ev.es; }
   function dictOf(l){ return l==="es" ? ES : (l==="de" ? DE : CA); }
-  function shareUrl(){ return SITE + (state.lang!=="ca" ? "?lang="+state.lang : ""); }
+  function shareUrl(){
+    var p = [];
+    if(state.lang!=="ca") p.push("lang="+state.lang);
+    if(FORZADA && state.asesora) p.push("a="+state.asesora);   // al compartir, se mantiene la asesora
+    return SITE + (p.length ? "?"+p.join("&") : "");
+  }
   function cityFull(ev){ return cityName(ev) + (ev.venue ? " ("+ev.venue+")" : ""); }
 
   /* ---------- idioma ---------- */
@@ -806,7 +815,7 @@ html.tt-edit .float{display:none!important}
   function waUrl(){
     var ev = byId(state.city), t = T[state.lang==="de" ? "es" : state.lang];
     if(!ev || !state.ed) return null;
-    var c = CONVOCA[ev.conv] || {};
+    var c = FORZADA || CONVOCA[ev.conv] || {};
     var d = pd(ev.date);
     var hour = ev[state.ed][0].replace(":00","");
     var city = state.lang==="de" ? ev.es + (ev.venue ? " ("+ev.venue+")" : "") : cityFull(ev);
@@ -988,6 +997,7 @@ html.tt-edit .float{display:none!important}
   var lang = "ca";
   if(q.lang==="es"||q.lang==="ca"||q.lang==="de") lang=q.lang;
   else { try{ var sv=localStorage.getItem("tt_lang"); if(sv==="es"||sv==="ca") lang=sv; }catch(e){} }
+  if(ASESORAS[q.a] && CONVOCA[ASESORAS[q.a]]){ FORZADA = CONVOCA[ASESORAS[q.a]]; state.asesora = q.a; }
   var pre = byId(q.c || q.ciutat || q.ciudad || "");
   if(pre && !past(pre)) state.city = pre.id;
   setLang(lang);
