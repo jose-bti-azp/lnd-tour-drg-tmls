@@ -19,3 +19,8 @@ Publicada con GitHub Pages (rama `main`, carpeta raíz).
 1. Edita en la rama `beta` y súbelo (commit + push).
 2. Avisa a Claude: «he subido un cambio a beta». Claude lo carga en el panel editor de claude.ai para revisarlo en móvil y ordenador.
 3. Si está bien, di «aprobado, pásalo a main». Claude lo fusiona en `main` y GitHub Pages lo publica en uno o dos minutos.
+
+## Estadísticas (GoatCounter, sin cookies)
+
+Panel: https://tour-timeless.goatcounter.com. Eventos: `ciutat-<ciudad>`, `reserva-<ciudad>-<mati|tarda>[-a-<asesora>]`, `asesora-<código>`, `compartir-whatsapp|copiar|mes`, `idioma-<ca|es>`, `visita-alemany`.
+Campañas: añadir `utm_campaign` (y opcionalmente `utm_source`) al enlace; GoatCounter las muestra solas en el widget «Campaigns».

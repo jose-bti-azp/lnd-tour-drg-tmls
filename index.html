@@ -617,6 +617,8 @@ html.tt-edit .float{display:none!important}
   var FALLBACK = "34629587595"; // Jose Antonio
   /* Asesora forzada por URL (?a=mt): cuando una asesora ayuda en una zona que no es la suya,
      todos los WhatsApp van a su teléfono, sea cual sea la ciudad elegida. */
+  /* Estadísticas GoatCounter (sin cookies): evento con nombre corto */
+  function track(name){ try{ if(window.goatcounter && goatcounter.count){ goatcounter.count({path:name, title:name, event:true}); } }catch(e){} }
   var ASESORAS = { mt:"montse", ma:"mariaangels", sa:"sandra", na:"natalia", as:"asun" };
   var FORZADA = null;
   var SITE = "https://tour-timeless.dr-grandel.es/";
@@ -777,7 +779,7 @@ html.tt-edit .float{display:none!important}
     if(window.TT) TT._marks();
     if(window.TT && TT.onLang) TT.onLang(l);
   }
-  $$(".lang button").forEach(function(b){ b.addEventListener("click", function(){ setLang(b.getAttribute("data-lang")); }); });
+  $$(".lang button").forEach(function(b){ b.addEventListener("click", function(){ track("idioma-"+b.getAttribute("data-lang")); setLang(b.getAttribute("data-lang")); }); });
 
   /* ---------- listado de ciudades (bloque «Serem a 7 ciutats») ---------- */
   function renderCities(){
@@ -801,7 +803,7 @@ html.tt-edit .float{display:none!important}
       var sp=document.createElement("span"); sp.textContent = done ? t.done : t.days[d.getDay()]+", "+t.num(d.getDate())+" "+t.months[d.getMonth()];
       b.appendChild(nb); b.appendChild(sp);
       if(ev.venue){ var em=document.createElement("em"); em.textContent=ev.venue; b.appendChild(em); }
-      b.addEventListener("click", function(){ state.city = ev.id; if(state.ed && edPast(ev,state.ed)) state.ed=null; renderCities(); update(); flash(); });
+      b.addEventListener("click", function(){ track("ciutat-"+ev.id); state.city = ev.id; if(state.ed && edPast(ev,state.ed)) state.ed=null; renderCities(); update(); flash(); });
       grid.appendChild(b);
     });
   }
@@ -865,7 +867,7 @@ html.tt-edit .float{display:none!important}
   /* si pulsa «Confirma» sin haber elegido, le llevamos al paso que falta */
   $$("[data-confirm]").forEach(function(a){
     a.addEventListener("click", function(e){
-      if(waUrl()) return;
+      if(waUrl()){ track("reserva-"+state.city+"-"+(state.ed==="m"?"mati":"tarda")+(state.asesora?"-a-"+state.asesora:"")); return; }
       e.preventDefault();
       var target = !state.city ? $("#stepCity") : $("#stepEd");
       flash(); target.classList.add("need");
@@ -875,7 +877,9 @@ html.tt-edit .float{display:none!important}
 
   /* ---------- compartir ---------- */
   var ok=$("#shareOk");
+  $("#shareWa").addEventListener("click", function(){ track("compartir-whatsapp"); });
   $("#shareCopy").addEventListener("click", function(){
+    track("compartir-copiar");
     var url = shareUrl();
     function done(){ ok.textContent = T[state.lang].copied; }
     function fail(){ ok.textContent = T[state.lang].copyFail; }
@@ -890,6 +894,7 @@ html.tt-edit .float{display:none!important}
   if(navigator.share){
     var nb=$("#shareNative"); nb.hidden=false;
     nb.addEventListener("click", function(){
+      track("compartir-mes");
       var url = shareUrl();
       navigator.share({title:"Tour Timeless · Dr. Grandel", text:T[state.lang].share, url:url}).catch(function(){});
     });
@@ -1004,7 +1009,13 @@ html.tt-edit .float{display:none!important}
   if(pre && !past(pre)) state.city = pre.id;
   setLang(lang);
   onScroll();
+  window.addEventListener("load", function(){ setTimeout(function(){
+    if(state.asesora) track("asesora-"+state.asesora);
+    if(lang==="de") track("visita-alemany");
+  }, 1500); });
 })();
 </script>
+<!-- ===== Analítica GoatCounter (sin cookies) · panel: tour-timeless.goatcounter.com ===== -->
+<script data-goatcounter="https://tour-timeless.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
