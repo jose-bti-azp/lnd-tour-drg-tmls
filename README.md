@@ -7,7 +7,7 @@ Dominio: https://tour-timeless.dr-grandel.es
 - `aviso-legal.html`: aviso legal y privacidad.
 - `img/`, `fonts/`: imágenes y tipografías locales (la página no hace peticiones a terceros).
 - `?lang=es` abre en castellano · `?lang=de` abre la versión en alemán (oculta: no tiene botón en la cabecera) · `?c=girona` abre con la ciudad elegida.
-- `?a=mt` (Montse), `?a=ma` (Maria Àngels), `?a=sa` (Sandra), `?a=na` (Natalia), `?a=as` (Asun): fuerza el WhatsApp de esa asesora sea cual sea la ciudad elegida; se mantiene al compartir el enlace. Se combina con los demás (`?a=mt&lang=es&c=tarragona`).
+- `?a=mt` (Montse), `?a=ma` (Maria Àngels), `?a=sa` (Sandra), `?a=na` (Natalia), `?a=as` (Asun), `?a=es` (Esther): fuerza el WhatsApp de esa asesora sea cual sea la ciudad elegida; se mantiene al compartir el enlace. Se combina con los demás (`?a=mt&lang=es&c=tarragona`).
 
 Publicada con GitHub Pages (rama `main`, carpeta raíz).
 
